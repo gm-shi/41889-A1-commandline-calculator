@@ -14,13 +14,13 @@ args.removeFirst(); // remove the name of the program
 
 let validator = Validator(); //Initialize a Validator object
 //Validate args is valid mathmatic expression
-if validator.valida(args: args){
+if validator.valida(args: args) {
     let calculator = Calculator(); // Initialize a Calculator object
     let result = calculator.calculate(args: args); //Do calculation
     print(result);
 }
 //if invalid, exit
-else{
+else {
     exit(1);
 }
 

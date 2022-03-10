@@ -11,7 +11,7 @@ import Foundation
 
 class Calculator {
     // Do calculation, returns the result as Integer
-    func calculate(args:[String]) -> Int{
+    func calculate(args:[String]) -> Int {
         var result = 0;                                     //Stores the result of culculation
         var opPosition: Int;                                //The operator position
         var currentPosition = 0;                            //Current osisiton of calculation process
@@ -20,7 +20,7 @@ class Calculator {
             return Int(args[0]) ?? 0;
         }
         //Return a String array with only "+" and "-" operation
-        while hasPriorityOperation(args: args){             //Do while loop if it has priority operation
+        while hasPriorityOperation(args: args) {             //Do while loop if it has priority operation
             opPosition = findPriorityOperation(args: args) ?? 0; //Find the first priority operator
             result = pairCalculation(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
             if args.count == 3 {
