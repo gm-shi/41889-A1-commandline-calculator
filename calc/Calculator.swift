@@ -10,69 +10,43 @@ import Foundation
 
 
 class Calculator {
-    var position: Int;
-    var currentResult: Int;
-    init (){
-        currentResult = 0;
-        position = 0;
-    };
-    func calculate(_ firstNumber: Int,_ op: String,_ secondNumber: Int) -> Int {
+    
+    func calculate(args:[String]) -> Int{
         var result = 0;
-        switch (op){
-        case "x":
-            result = firstNumber * secondNumber; break;
-        case "/":
-            result = firstNumber / secondNumber; break;
-        case "%":
-            result = firstNumber % secondNumber; break;
-        case "+":
-            result = firstNumber + secondNumber; break;
-        case "-":
-            result = firstNumber - secondNumber; break;
-        default:
-            break;
-        }
-        return result;
-    }
-    
-    func calc (args:[String]) -> Int {
-        var newArgs = args;
+        var opPosition: Int;
+        var currentPosition = 0;
+        
         if args.count == 1 {
-            currentResult = Int(args[0]) ?? 0;
+            return Int(args[0]) ?? 0;
         }
-        while hasPriorityOperation(args: newArgs){
-            if newArgs.count == 3 {
-                return calculate(Int(newArgs[0]) ?? 0, newArgs[1], Int(newArgs[2]) ?? 0);
+        while hasPriorityOperation(args: args){
+            opPosition = findPriorityOperation(args: args) ?? 0;
+            result = pairCalculate(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
+            if args.count == 3 {
+                return result;
             }
-            newArgs = doPriorityOperation(args: newArgs);
-        }
-        if newArgs.count >= 3 {
-            currentResult = calculate(Int(newArgs[0]) ?? 0, newArgs[1], Int(newArgs[2]) ?? 0);
-            position = 2;
-        }
-        while position+2 <= newArgs.count && newArgs.count >= 3{
-                position += 1;
-                let op = newArgs[position];
-                position += 1;
-                let secondNum = Int(newArgs[position]) ?? 0;
-                currentResult = calculate(currentResult, op, secondNum);
+            if opPosition == 1{
+                return doCalculation(args: ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
             }
-        return currentResult;
-    }
-    
-    func doPriorityOperation(args:[String]) -> [String]{
-        var result: Int;
-        let opPosition = findPriorityOperation(args: args) ?? 0;
-        result = calculate(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
-        if opPosition == 1{
-            return ["\(result)"] + Array(args[opPosition + 2...args.count - 1]);
+            else if opPosition > 1 && opPosition < args.count - 2{
+                return doCalculation(args: Array(args[0...opPosition - 2]) + ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
+            }
+            else {
+                return doCalculation(args: Array(args[0...opPosition - 2]) + ["\(result)"]);
+            }
         }
-        else if opPosition > 1 && opPosition < args.count - 2{
-            return Array(args[0...opPosition - 2]) + ["\(result)"] + Array(args[opPosition + 2...args.count - 1]);
+        if args.count >= 3 {
+            result = pairCalculate(Int(args[0]) ?? 0, args[1], Int(args[2]) ?? 0);
+            currentPosition = 2;
         }
-        else {
-            return Array(args[0...opPosition - 2]) + ["\(result)"];
-        }
+        while currentPosition+2 <= args.count && args.count >= 3{
+            currentPosition  += 1;
+                let op = args[currentPosition];
+                currentPosition  += 1;
+                let secondNum = Int(args[currentPosition]) ?? 0;
+                result = pairCalculate(result, op, secondNum);
+            }
+        return result;
 
     }
     func hasPriorityOperation (args:[String]) -> Bool {
@@ -94,8 +68,6 @@ class Calculator {
         return nil;
     }
 
-
-
     func isPriorityOperator(arg:String) -> Bool {
         let op = arg;
         if(op == "x" || op == "/" || op == "%") {
@@ -103,6 +75,25 @@ class Calculator {
 
         }
         return false;
+    }
+    
+    func pairCalculate(_ firstNumber: Int,_ op: String,_ secondNumber: Int) -> Int {
+        var result = 0;
+        switch (op){
+        case "x":
+            result = firstNumber * secondNumber; break;
+        case "/":
+            result = firstNumber / secondNumber; break;
+        case "%":
+            result = firstNumber % secondNumber; break;
+        case "+":
+            result = firstNumber + secondNumber; break;
+        case "-":
+            result = firstNumber - secondNumber; break;
+        default:
+            break;
+        }
+        return result;
     }
 
 }

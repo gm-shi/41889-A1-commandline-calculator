@@ -18,7 +18,7 @@ let validator = Validator(); //Initialize a Validator object
 if (validator.valida(args: args)){
     let calculator = Calculator(); // Initialize a Calculator object
 
-    let result = calculator.calc(args: args); //Do calculation
+    let result = calculator.calculate(args: args); //Do calculation
 
     print(result);
 }
