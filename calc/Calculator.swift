@@ -21,22 +21,22 @@ class Calculator {
         }
         while hasPriorityOperation(args: args){
             opPosition = findPriorityOperation(args: args) ?? 0;
-            result = pairCalculate(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
+            result = pairCalculation(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
             if args.count == 3 {
                 return result;
             }
             if opPosition == 1{
-                return doCalculation(args: ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
+                return calculate(args: ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
             }
             else if opPosition > 1 && opPosition < args.count - 2{
-                return doCalculation(args: Array(args[0...opPosition - 2]) + ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
+                return calculate(args: Array(args[0...opPosition - 2]) + ["\(result)"] + Array(args[opPosition + 2...args.count - 1]));
             }
             else {
-                return doCalculation(args: Array(args[0...opPosition - 2]) + ["\(result)"]);
+                return calculate(args: Array(args[0...opPosition - 2]) + ["\(result)"]);
             }
         }
         if args.count >= 3 {
-            result = pairCalculate(Int(args[0]) ?? 0, args[1], Int(args[2]) ?? 0);
+            result = pairCalculation(Int(args[0]) ?? 0, args[1], Int(args[2]) ?? 0);
             currentPosition = 2;
         }
         while currentPosition+2 <= args.count && args.count >= 3{
@@ -44,7 +44,7 @@ class Calculator {
                 let op = args[currentPosition];
                 currentPosition  += 1;
                 let secondNum = Int(args[currentPosition]) ?? 0;
-                result = pairCalculate(result, op, secondNum);
+                result = pairCalculation(result, op, secondNum);
             }
         return result;
 
@@ -77,7 +77,7 @@ class Calculator {
         return false;
     }
     
-    func pairCalculate(_ firstNumber: Int,_ op: String,_ secondNumber: Int) -> Int {
+    func pairCalculation(_ firstNumber: Int,_ op: String,_ secondNumber: Int) -> Int {
         var result = 0;
         switch (op){
         case "x":
