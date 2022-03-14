@@ -10,14 +10,14 @@ import Foundation
 //validation class
 class Validator {
     // varify array
-    func valida (args:[String]) -> Bool {
-        if allNumAndOps(args: args) && validExpression(args: args) {   //Check if array is conbined only with numbers and operators,
+    func validate (args:[String]) -> Bool {
+        if isAllNumAndOps(args: args) && validExpression(args: args) {   //Check if array is conbined only with numbers and operators,
             return true;                                                //and the number of arguments is even number
         }
         return false;
     }
     //Check if array is conbined only with numbers and operators,
-    func allNumAndOps (args:[String]) -> Bool {
+    func isAllNumAndOps (args:[String]) -> Bool {
         for i in 0...(args.count - 1) {                                 //Loop through the array, the index of an argument is even,
             if i % 2 == 0{                                              //check if it can conver to Int
                 let int = Int(args[i])
