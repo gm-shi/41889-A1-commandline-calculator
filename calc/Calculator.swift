@@ -21,7 +21,7 @@ class Calculator {
         }
         //Return a String array with only "+" and "-" operation
         while hasPriorityOperation(args: args) {             //Do while loop if it has priority operation
-            opPosition = findPriorityOperation(args: args) ?? 0; //Find the first priority operator
+            opPosition = findPriorityOperation(args: args) ?? 1; //Find the first priority operator
             result = pairCalculation(Int(args[opPosition-1]) ?? 0, args[opPosition] , Int(args[opPosition+1]) ?? 0);
             if args.count == 3 {
                 return result;
